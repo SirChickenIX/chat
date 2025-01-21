@@ -1,0 +1,4 @@
+name: chat
+version: '1.0-SNAPSHOT'
+main: org.sirchickenix.chat.Main
+api-version: '1.21'
