@@ -7,12 +7,20 @@ import org.sirchickenix.chat.commands.ChatCommand;
 public final class Main extends JavaPlugin {
 
     private LuckPerms luckPerms;
+    private ChatCommand chatCommand;
 
     @Override
     public void onEnable() {
-        // Plugin startup logic
+        //Instances of classes
         this.luckPerms = getServer().getServicesManager().load(LuckPerms.class);
-        getCommand("chat").setExecutor(new ChatCommand(this, this.luckPerms));
+        this.chatCommand = new ChatCommand(this, luckPerms);
+
+        //Commands
+        getCommand("chat").setExecutor(chatCommand);
+
+        //Listeners
+        getServer().getPluginManager().registerEvents(chatCommand, this);
+        //Success Message
         System.out.println("Chat plugin has started successfully");
     }
 
