@@ -87,7 +87,7 @@ public class ChatCommand implements CommandExecutor, TabCompleter, Listener {
                 default:
                     return false;
             }
-            player.sendMessage("Turned chat " + (isChatOn ? "on" : "off"));
+            player.sendMessage(ChatColor.RED + "Chat is now " + (isChatOn ? "on" : "off"));
             return true;
         }
         if(args.length != 0) {
@@ -105,16 +105,16 @@ public class ChatCommand implements CommandExecutor, TabCompleter, Listener {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
         List<String> list = new ArrayList<>();
+        list.add("toggle");
         list.add("on");
         list.add("off");
-        list.add("toggle");
 
         return list;
     }
 
     //Creates an inventory - this is one per player per server instance to prevent memory leaks
     public Inventory makeInventory() {
-        Inventory inv = Bukkit.createInventory(null, 27, "Name");
+        Inventory inv = Bukkit.createInventory(null, 27, ChatColor.RED + "" + ChatColor.BOLD + "CHAT GUI");
 
         ItemStack blank = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
         ItemMeta blankMeta = blank.getItemMeta();
@@ -159,6 +159,7 @@ public class ChatCommand implements CommandExecutor, TabCompleter, Listener {
                     inv.setItem(13, onButton);
                 }
                 isChatOn = !isChatOn;
+                event.getWhoClicked().sendMessage(ChatColor.RED + "Chat is now " + (isChatOn ? "on" : "off"));
                 break;
             default:
                 break;

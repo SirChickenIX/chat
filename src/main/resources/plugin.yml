@@ -1,5 +1,5 @@
 name: chat
-version: 'beta-0.1.1a'
+version: 'beta-0.1.2'
 main: org.sirchickenix.chat.Main
 api-version: '1.21'
 authors: [ SirChickenIX ]
@@ -9,6 +9,7 @@ commands:
   chat:
     description: Access settings for chat
     usage: /<command> [on|off|toggle]
+    permission: "chat.chat"
 permissions:
   chat.chat:
     description: Allows someone to run the /chat command
