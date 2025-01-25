@@ -3,6 +3,7 @@ package org.sirchickenix.chat;
 import net.luckperms.api.LuckPerms;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.sirchickenix.chat.commands.ChatCommand;
+import org.sirchickenix.chat.listeners.ChatListener;
 
 public final class Main extends JavaPlugin {
 
@@ -20,6 +21,7 @@ public final class Main extends JavaPlugin {
 
         //Listeners
         getServer().getPluginManager().registerEvents(chatCommand, this);
+        getServer().getPluginManager().registerEvents(new ChatListener(), this);
         //Success Message
         System.out.println("Chat plugin has started successfully");
     }
