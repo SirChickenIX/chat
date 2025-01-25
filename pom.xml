@@ -6,7 +6,7 @@
 
     <groupId>org.sirchickenix</groupId>
     <artifactId>chat</artifactId>
-    <version>beta-0.1.0a</version>
+    <version>beta-0.1.0e</version>
     <packaging>jar</packaging>
 
     <name>chat</name>

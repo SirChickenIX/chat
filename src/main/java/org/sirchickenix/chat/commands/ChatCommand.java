@@ -1,6 +1,10 @@
 package org.sirchickenix.chat.commands;
 
 import net.luckperms.api.LuckPerms;
+import net.luckperms.api.model.group.Group;
+import net.luckperms.api.model.user.User;
+import net.luckperms.api.node.NodeType;
+import net.luckperms.api.node.types.InheritanceNode;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -17,9 +21,16 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.sirchickenix.chat.Main;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 public class ChatCommand implements CommandExecutor, Listener {
+    public static boolean isChatOn = true;
+
     private final LuckPerms luckPerms;
     private final Main plugin;
     private final ItemStack onButton;
@@ -27,8 +38,6 @@ public class ChatCommand implements CommandExecutor, Listener {
 
     //HashMap of (player, inventory) so that there is one inventory per player - avoid memory leaks
     private HashMap<OfflinePlayer, Inventory> guis = new HashMap<OfflinePlayer, Inventory>();
-
-    public static boolean isChatOn = true;
 
     public ChatCommand(Main plugin, LuckPerms luckperms) {
         this.plugin = plugin;
@@ -50,11 +59,14 @@ public class ChatCommand implements CommandExecutor, Listener {
     //Chat Command
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        String test = "group.default";
-        if(!(sender instanceof Player)) {
+
+        if(!(sender instanceof Player player)) {
             return false;
         }
-        Player player = (Player)sender;
+        if(!player.hasPermission("simplechat.chat")) {
+            return false;
+        }
+
         OfflinePlayer offlinePlayer = this.plugin.getServer().getOfflinePlayer(player.getName());
         if(!guis.containsKey(offlinePlayer)) {
             guis.put(offlinePlayer, makeInventory());
@@ -62,8 +74,6 @@ public class ChatCommand implements CommandExecutor, Listener {
         updateInventory(guis.get(offlinePlayer));
         player.openInventory(guis.get(offlinePlayer));
 
-
-        System.out.println(player);
         return true;
     }
 
@@ -78,7 +88,6 @@ public class ChatCommand implements CommandExecutor, Listener {
         for(int i = 0; i < inv.getSize(); i++) {
             if(inv.getItem(i) == null) {
                 inv.setItem(i, blank);
-                System.out.println(blank.getItemMeta().getDisplayName());
             }
         }
         return inv;
@@ -88,14 +97,15 @@ public class ChatCommand implements CommandExecutor, Listener {
     public void updateInventory(Inventory inv) {
 
         if(ChatCommand.isChatOn) {
-            inv.setItem(12, onButton);
+            inv.setItem(13, onButton);
         } else {
-            inv.setItem(12, offButton);
+            inv.setItem(13, offButton);
         }
     }
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
+        if(event.getClickedInventory() == null) return;
         //checks that clicked inventory is in our list of chat command guis
         for(OfflinePlayer offlinePlayer : guis.keySet()) {
             if(event.getClickedInventory().equals(guis.get(offlinePlayer))) {
@@ -107,11 +117,11 @@ public class ChatCommand implements CommandExecutor, Listener {
 
         Inventory inv = event.getInventory();
         switch(event.getSlot()) {
-            case 12:
+            case 13:
                 if(ChatCommand.isChatOn) {
-                    inv.setItem(12, offButton);
+                    inv.setItem(13, offButton);
                 } else {
-                    inv.setItem(12, onButton);
+                    inv.setItem(13, onButton);
                 }
                 isChatOn = !isChatOn;
                 break;
@@ -120,4 +130,5 @@ public class ChatCommand implements CommandExecutor, Listener {
         }
 
     }
+
 }

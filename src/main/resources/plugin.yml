@@ -6,9 +6,8 @@ authors: [ SirChickenIX ]
 commands:
   chat:
     description: Access settings for chat
-    usage: /<command>
-    permission: simplechat.chat
-    permission-message: You don't have permission to run this command
+    usage: /<command> to open gui
+    permission: "simplechat.chat"
 permissions:
   simplechat.chat:
     description: Allows someone to run the /chat command
