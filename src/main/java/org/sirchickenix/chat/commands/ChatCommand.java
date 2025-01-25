@@ -63,8 +63,9 @@ public class ChatCommand implements CommandExecutor, Listener {
         if(!(sender instanceof Player player)) {
             return false;
         }
-        if(!player.hasPermission("simplechat.chat")) {
-            return false;
+        if(!player.hasPermission("chat.chat")) {
+            player.sendMessage(ChatColor.RED + "You don't have permission to run /" + label);
+            return true;
         }
 
         OfflinePlayer offlinePlayer = this.plugin.getServer().getOfflinePlayer(player.getName());

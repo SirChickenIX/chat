@@ -1,14 +1,15 @@
 name: chat
-version: '1.0-SNAPSHOT'
+version: 'beta-0.1.0e'
 main: org.sirchickenix.chat.Main
 api-version: '1.21'
 authors: [ SirChickenIX ]
+description: This plugin allows chat to be toggled on and off
+depend: [ LuckPerms ]
 commands:
   chat:
     description: Access settings for chat
     usage: /<command> to open gui
-    permission: "simplechat.chat"
 permissions:
-  simplechat.chat:
+  chat.chat:
     description: Allows someone to run the /chat command
     default: op
