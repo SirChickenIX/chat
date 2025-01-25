@@ -1,5 +1,5 @@
 name: chat
-version: 'beta-0.1.0e'
+version: 'beta-0.1.1'
 main: org.sirchickenix.chat.Main
 api-version: '1.21'
 authors: [ SirChickenIX ]

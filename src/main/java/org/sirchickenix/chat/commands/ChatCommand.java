@@ -20,6 +20,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.sirchickenix.chat.Main;
+import org.sirchickenix.chat.utils.DataAccessor;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -35,13 +36,15 @@ public class ChatCommand implements CommandExecutor, Listener {
     private final Main plugin;
     private final ItemStack onButton;
     private final ItemStack offButton;
+    private final DataAccessor dataAccessor;
 
     //HashMap of (player, inventory) so that there is one inventory per player - avoid memory leaks
     private HashMap<OfflinePlayer, Inventory> guis = new HashMap<OfflinePlayer, Inventory>();
 
-    public ChatCommand(Main plugin, LuckPerms luckperms) {
+    public ChatCommand(Main plugin, LuckPerms luckperms, DataAccessor dataAccessor) {
         this.plugin = plugin;
         this.luckPerms = luckperms;
+        this.dataAccessor = dataAccessor;
 
         ItemStack on = new ItemStack(Material.GREEN_CONCRETE);
         ItemMeta onButtonMeta = on.getItemMeta();
