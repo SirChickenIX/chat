@@ -1,6 +1,7 @@
 package org.sirchickenix.chat;
 
 import net.luckperms.api.LuckPerms;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.sirchickenix.chat.commands.ChatCommand;
 import org.sirchickenix.chat.listeners.ChatListener;
@@ -27,6 +28,7 @@ public final class Main extends JavaPlugin {
 
         //Commands
         getCommand("chat").setExecutor(chatCommand);
+        getCommand("chat").setTabCompleter(chatCommand);
 
         //Listeners
         getServer().getPluginManager().registerEvents(chatCommand, this);

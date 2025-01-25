@@ -8,7 +8,7 @@ depend: [ LuckPerms ]
 commands:
   chat:
     description: Access settings for chat
-    usage: /<command> to open gui
+    usage: /<command> [on|off|toggle]
 permissions:
   chat.chat:
     description: Allows someone to run the /chat command

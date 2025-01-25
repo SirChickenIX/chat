@@ -12,6 +12,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,14 +23,12 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.sirchickenix.chat.Main;
 import org.sirchickenix.chat.utils.DataAccessor;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
-public class ChatCommand implements CommandExecutor, Listener {
+public class ChatCommand implements CommandExecutor, TabCompleter, Listener {
     public static boolean isChatOn = true;
 
     private final LuckPerms luckPerms;
@@ -72,6 +71,28 @@ public class ChatCommand implements CommandExecutor, Listener {
         }
 
         OfflinePlayer offlinePlayer = this.plugin.getServer().getOfflinePlayer(player.getName());
+
+        if(args.length == 1) {
+            args[0] = args[0].toLowerCase();
+            switch (args[0]) {
+                case "on":
+                    ChatCommand.isChatOn = true;
+                    break;
+                case "off":
+                    ChatCommand.isChatOn = false;
+                    break;
+                case "toggle":
+                    ChatCommand.isChatOn = !ChatCommand.isChatOn;
+                    break;
+                default:
+                    return false;
+            }
+            player.sendMessage("Turned chat " + (isChatOn ? "on" : "off"));
+            return true;
+        }
+        if(args.length != 0) {
+            return false;
+        }
         if(!guis.containsKey(offlinePlayer)) {
             guis.put(offlinePlayer, makeInventory());
         }
@@ -79,6 +100,16 @@ public class ChatCommand implements CommandExecutor, Listener {
         player.openInventory(guis.get(offlinePlayer));
 
         return true;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
+        List<String> list = new ArrayList<>();
+        list.add("on");
+        list.add("off");
+        list.add("toggle");
+
+        return list;
     }
 
     //Creates an inventory - this is one per player per server instance to prevent memory leaks
